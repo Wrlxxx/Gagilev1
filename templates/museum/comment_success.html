@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+
+{% block title %}Comment Submitted{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-body text-center">
+                    <h4>Thank You!</h4>
+                    <p>Your comment has been submitted successfully.</p>
+                    <a href="{% url 'home' %}" class="btn btn-primary">Return to Home</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ tournament.name }}{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <h1>{{ tournament.name }}</h1>
+    <p class="lead">Season {{ tournament.season }} - {{ tournament.date }}</p>
+    
+    <div class="row">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Tournament Results</h5>
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item"><strong>Winner:</strong> {{ tournament.winner }}</li>
+                        <li class="list-group-item"><strong>Runner-up:</strong> {{ tournament.runner_up }}</li>
+                        <li class="list-group-item"><strong>MVP:</strong> {{ tournament.mvp }}</li>
+                        <li class="list-group-item"><strong>Prize Pool:</strong> {{ tournament.prize_pool }}</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    {% if tournament.highlights %}
+    <div class="row mt-4">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Highlights</h5>
+                    <p class="card-text">{{ tournament.highlights }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+    
+    <div class="mt-4">
+        <a href="{% url 'tournaments' %}" class="btn btn-secondary">Back to Tournaments</a>
+    </div>
+</div>
+{% endblock %}

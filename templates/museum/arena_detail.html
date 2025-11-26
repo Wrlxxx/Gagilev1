@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ arena.name }}{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <h1>{{ arena.name }}</h1>
+    <div class="row">
+        <div class="col-md-6">
+            <img src="{{ arena.image.url }}" class="img-fluid rounded" alt="{{ arena.name }}">
+        </div>
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Arena Information</h5>
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item"><strong>Type:</strong> {{ arena.get_arena_type_display }}</li>
+                        <li class="list-group-item"><strong>Environment:</strong> {{ arena.environment }}</li>
+                        <li class="list-group-item"><strong>Capacity:</strong> {{ arena.capacity }}</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="row mt-4">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Special Features</h5>
+                    <p class="card-text">{{ arena.special_features }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="mt-4">
+        <a href="{% url 'arena_collection' %}" class="btn btn-secondary">Back to Arenas</a>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+
+{% block title %}Achievements{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <h1 class="text-center mb-4">Rocket League Achievements</h1>
+    
+    <div class="row">
+        {% for achievement in achievements %}
+        <div class="col-md-6 mb-4">
+            <div class="card h-100">
+                {% if achievement.icon %}
+                <img src="{{ achievement.icon.url }}" class="card-img-top" alt="{{ achievement.title }}" style="height: 200px; object-fit: contain; background-color: #f8f9fa;">
+                {% else %}
+                <div class="card-img-top bg-warning d-flex align-items-center justify-content-center" style="height: 200px;">
+                    <i class="fas fa-trophy fa-3x text-white"></i>
+                </div>
+                {% endif %}
+                <div class="card-body">
+                    <h5 class="card-title">{{ achievement.title }}</h5>
+                    <span class="badge bg-{% if achievement.difficulty == 'easy' %}success{% elif achievement.difficulty == 'medium' %}warning{% elif achievement.difficulty == 'hard' %}danger{% else %}dark{% endif %} mb-2">
+                        {{ achievement.get_difficulty_display }}
+                    </span>
+                    <p class="card-text">{{ achievement.description }}</p>
+                    <p class="card-text"><strong>Requirements:</strong> {{ achievement.requirements }}</p>
+                    {% if achievement.reward %}
+                    <p class="card-text"><strong>Reward:</strong> <span class="text-success">{{ achievement.reward }}</span></p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <div class="col-12">
+            <div class="alert alert-info text-center">
+                <h4>No achievements available yet</h4>
+                <p>Check back later or add some achievements through the admin panel.</p>
+                {% if user.is_superuser %}
+                <a href="{% url 'admin:museum_achievement_add' %}" class="btn btn-primary">Add Achievement in Admin</a>
+                {% endif %}
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

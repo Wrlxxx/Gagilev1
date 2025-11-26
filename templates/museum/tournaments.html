@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+
+{% block title %}Tournaments{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <h1 class="text-center mb-4">Rocket League Tournaments</h1>
+    
+    <div class="row">
+        {% for tournament in tournaments %}
+        <div class="col-md-6 mb-4">
+            <div class="card h-100">
+                <div class="card-body">
+                    <h5 class="card-title">{{ tournament.name }}</h5>
+                    <h6 class="card-subtitle mb-2 text-muted">Season {{ tournament.season }}</h6>
+                    <p class="card-text">
+                        <strong>Date:</strong> {{ tournament.date }}<br>
+                        <strong>Winner:</strong> {{ tournament.winner }}<br>
+                        <strong>Prize Pool:</strong> {{ tournament.prize_pool }}<br>
+                        <strong>MVP:</strong> {{ tournament.mvp }}
+                    </p>
+                    <a href="{% url 'tournament_detail' tournament.id %}" class="btn btn-primary">View Details</a>
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <div class="col-12">
+            <div class="alert alert-info text-center">
+                <h4>No tournaments available yet</h4>
+                <p>Check back later or add some tournaments through the admin panel.</p>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

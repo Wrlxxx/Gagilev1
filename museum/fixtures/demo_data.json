@@ -1,0 +1,95 @@
+[
+{
+    "model": "museum.car",
+    "pk": 1,
+    "fields": {
+        "name": "Octane",
+        "manufacturer": "Psyonix",
+        "rarity": "common",
+        "hitbox": "Octane",
+        "release_date": "2015-07-07",
+        "description": "The Octane is the most popular car in Rocket League, known for its balanced hitbox and excellent turning radius. It's the go-to choice for many professional players.",
+        "image": "cars/octane.jpg",
+        "price": "Common"
+    }
+},
+{
+    "model": "museum.car",
+    "pk": 2,
+    "fields": {
+        "name": "Dominus",
+        "manufacturer": "Psyonix",
+        "rarity": "import",
+        "hitbox": "Dominus",
+        "release_date": "2015-07-07",
+        "description": "The Dominus features a flat, wide hitbox perfect for powerful flicks and precise ground shots. A favorite among freestylers.",
+        "image": "cars/dominus.jpg",
+        "price": "500 Credits"
+    }
+},
+{
+    "model": "museum.car",
+    "pk": 3,
+    "fields": {
+        "name": "Fennec",
+        "manufacturer": "Psyonix",
+        "rarity": "import",
+        "hitbox": "Octane",
+        "release_date": "2019-07-01",
+        "description": "The Fennec uses the Octane hitbox but with a visual design that many players find easier for precise hits and dribbles.",
+        "image": "cars/fennec.jpg",
+        "price": "500 Credits"
+    }
+},
+{
+    "model": "museum.arena",
+    "pk": 1,
+    "fields": {
+        "name": "Mannfield",
+        "arena_type": "standard",
+        "environment": "Urban Stadium",
+        "capacity": "Large",
+        "special_features": "Classic symmetrical design with clear boundaries and excellent visibility. The original Rocket League experience.",
+        "image": "arenas/mannfield.jpg"
+    }
+},
+{
+    "model": "museum.arena",
+    "pk": 2,
+    "fields": {
+        "name": "Champions Field",
+        "arena_type": "competitive",
+        "environment": "Grand Stadium",
+        "capacity": "Large",
+        "special_features": "Official tournament arena with enhanced lighting and crowd effects. Home of RLCS championships.",
+        "image": "arenas/champions_field.jpg"
+    }
+},
+{
+    "model": "museum.gameupdate",
+    "pk": 1,
+    "fields": {
+        "version": "1.0",
+        "release_date": "2015-07-07",
+        "title": "Initial Release",
+        "description": "The very first release of Rocket League, introducing the world to car soccer.",
+        "major_changes": "8 cars, 10 arenas, local and online multiplayer, cross-platform play between PS4 and PC",
+        "image": "updates/v1.0.jpg"
+    }
+},
+{
+    "model": "museum.tournament",
+    "pk": 1,
+    "fields": {
+        "name": "RLCS Season 1 World Championship",
+        "season": "1",
+        "date": "2016-08-07",
+        "prize_pool": "$55,000",
+        "winner": "iBUYPOWER Cosmic",
+        "runner_up": "Kings of Urban",
+        "mvp": "Kronovi",
+        "highlights": "The first ever RLCS World Championship that set the stage for Rocket League esports.",
+        "image": "tournaments/rlcs_s1.jpg"
+    }
+}
+]

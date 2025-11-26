@@ -1,0 +1,150 @@
+{% extends 'base.html' %}
+
+{% block title %}Home{% endblock %}
+
+{% block content %}
+<div class="hero-section text-center">
+    <div class="container">
+        <h1 class="display-4 fw-bold">Welcome to Rocket League Museum</h1>
+        <p class="lead">Explore the incredible world of Rocket League - from legendary cars to epic tournaments</p>
+        <a href="{% url 'car_collection' %}" class="btn btn-primary btn-lg mt-3">Start Exploring</a>
+    </div>
+</div>
+
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-md-4 mb-4">
+            <div class="card h-100">
+                <div class="card-body text-center">
+                    <i class="fas fa-car fa-3x text-primary mb-3"></i>
+                    <h3>Car Collection</h3>
+                    <p>Discover all the iconic cars from Octane to Fennec with detailed specifications</p>
+                    <a href="{% url 'car_collection' %}" class="btn btn-outline-primary">View Collection</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 mb-4">
+            <div class="card h-100">
+                <div class="card-body text-center">
+                    <i class="fas fa-play-circle fa-3x text-danger mb-3"></i>
+                    <h3>Best Moments</h3>
+                    <p>Watch incredible highlights and amazing plays from Rocket League tournaments</p>
+                    <a href="{% url 'highlights' %}" class="btn btn-outline-danger">Watch Highlights</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 mb-4">
+            <div class="card h-100">
+                <div class="card-body text-center">
+                    <i class="fas fa-comments fa-3x text-info mb-3"></i>
+                    <h3>Community</h3>
+                    <p>Read and share comments with other Rocket League enthusiasts</p>
+                    <a href="{% url 'comments_list' %}" class="btn btn-outline-info">View Comments</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% if featured_highlights %}
+<div class="container mt-5">
+    <h2 class="text-center mb-4">Featured Highlights</h2>
+    <div class="row">
+        {% for highlight in featured_highlights %}
+        <div class="col-lg-4 col-md-6 mb-4">
+            <div class="card h-100 highlight-card">
+                <div class="card-header bg-dark text-white">
+                    <small class="text-warning">{{ highlight.get_moment_type_display }}</small>
+                </div>
+                <div class="ratio ratio-16x9">
+                    <iframe src="{{ highlight.video_url }}" 
+                            title="{{ highlight.title }}"
+                            allowfullscreen
+                            style="border: none;">
+                    </iframe>
+                </div>
+                <div class="card-body">
+                    <h5 class="card-title">{{ highlight.title }}</h5>
+                    <p class="card-text text-muted small">{{ highlight.description|truncatewords:15 }}</p>
+                    <div class="d-flex justify-content-between align-items-center">
+                        <span class="badge bg-primary">{{ highlight.player }}</span>
+                        <small class="text-muted">{{ highlight.duration }}</small>
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <a href="{% url 'highlight_detail' highlight.id %}" class="btn btn-sm btn-outline-primary w-100">
+                        Watch Full Video
+                    </a>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    <div class="text-center mt-3">
+        <a href="{% url 'highlights' %}" class="btn btn-outline-danger">View All Highlights</a>
+    </div>
+</div>
+{% endif %}
+
+<div class="container mt-5">
+    <h2 class="text-center mb-4">Featured Content</h2>
+    <div class="row">
+        <div class="col-md-6 mb-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Latest Cars</h5>
+                    <p class="card-text">Explore our growing collection of Rocket League vehicles with detailed specifications and history.</p>
+                    <a href="{% url 'car_collection' %}" class="btn btn-primary">Browse Cars</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 mb-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Game History</h5>
+                    <p class="card-text">Follow the evolution of Rocket League through major updates and changes over the years.</p>
+                    <a href="{% url 'game_history' %}" class="btn btn-success">View History</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% if recent_comments %}
+<div class="container mt-5">
+    <h2 class="text-center mb-4">Recent Visitor Comments</h2>
+    <div class="row">
+        {% for comment in recent_comments %}
+        <div class="col-lg-6 mb-3">
+            <div class="card comment-card h-100">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-start">
+                        <h6 class="card-title">{{ comment.user.username }}</h6>
+                        <span class="badge bg-warning text-dark">
+                            {% for i in "12345" %}
+                                {% if forloop.counter <= comment.rating %}★{% else %}☆{% endif %}
+                            {% endfor %}
+                        </span>
+                    </div>
+                    <p class="card-text small">{{ comment.comment|truncatewords:20 }}</p>
+                    <small class="text-muted">{{ comment.created_at|timesince }} ago</small>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    <div class="text-center mt-3">
+        <a href="{% url 'comments_list' %}" class="btn btn-outline-primary">View All Comments</a>
+    </div>
+</div>
+{% endif %}
+
+<style>
+.highlight-card {
+    transition: transform 0.2s;
+}
+.highlight-card:hover {
+    transform: translateY(-5px);
+}
+</style>
+{% endblock %}

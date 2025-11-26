@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ car.name }}{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-md-6">
+            <img src="{{ car.image.url }}" class="img-fluid rounded" alt="{{ car.name }}">
+        </div>
+        <div class="col-md-6">
+            <h1>{{ car.name }}</h1>
+            <p class="lead">{{ car.manufacturer }}</p>
+            
+            <div class="mb-3">
+                <span class="badge bg-{% if car.rarity == 'common' %}secondary{% elif car.rarity == 'uncommon' %}success{% elif car.rarity == 'rare' %}primary{% elif car.rarity == 'very_rare' %}info{% elif car.rarity == 'import' %}warning{% elif car.rarity == 'exotic' %}dark{% else %}danger{% endif %} fs-6">
+                    {{ car.get_rarity_display }}
+                </span>
+            </div>
+
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Specifications</h5>
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item"><strong>Hitbox:</strong> {{ car.hitbox }}</li>
+                        <li class="list-group-item"><strong>Release Date:</strong> {{ car.release_date }}</li>
+                        {% if car.price %}
+                        <li class="list-group-item"><strong>Price:</strong> {{ car.price }}</li>
+                        {% endif %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="row mt-4">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Description</h5>
+                    <p class="card-text">{{ car.description }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="mt-4">
+        <a href="{% url 'car_collection' %}" class="btn btn-secondary">Back to Collection</a>
+    </div>
+</div>
+{% endblock %}

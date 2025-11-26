@@ -1,0 +1,32 @@
+[
+{
+    "model": "museum.visitorcomment",
+    "pk": 1,
+    "fields": {
+        "user": 1,
+        "comment": "Amazing museum! As a long-time Rocket League player, I really appreciate the detailed car collection and tournament history. The Octane exhibit brought back so many memories!",
+        "created_at": "2024-01-15T10:30:00Z",
+        "rating": 5
+    }
+},
+{
+    "model": "museum.visitorcomment",
+    "pk": 2,
+    "fields": {
+        "user": 1,
+        "comment": "The arena section could use more images, but overall a great educational resource for Rocket League fans. Loved the tournament history!",
+        "created_at": "2024-01-20T14:45:00Z",
+        "rating": 4
+    }
+},
+{
+    "model": "museum.visitorcomment",
+    "pk": 3,
+    "fields": {
+        "user": 1,
+        "comment": "Perfect for my course project! The Django implementation is clean and the Rocket League theme is well executed. Would love to see more interactive features.",
+        "created_at": "2024-01-25T09:15:00Z",
+        "rating": 5
+    }
+}
+]

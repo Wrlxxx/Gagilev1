@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+
+{% block title %}About{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-lg-8 mx-auto">
+            <h1 class="text-center mb-4">About Rocket League Museum</h1>
+            
+            <div class="card mb-4">
+                <div class="card-body">
+                    <h3>Our Mission</h3>
+                    <p>
+                        The Rocket League Museum is dedicated to preserving and showcasing the rich history 
+                        and cultural impact of Psyonix's revolutionary game - Rocket League. From its humble 
+                        beginnings to becoming an esports phenomenon, we document every aspect of this 
+                        incredible game.
+                    </p>
+                </div>
+            </div>
+
+            <div class="card mb-4">
+                <div class="card-body">
+                    <h3>What We Offer</h3>
+                    <ul>
+                        <li>Complete collection of all Rocket League cars with detailed specifications</li>
+                        <li>Comprehensive arena database with environmental details</li>
+                        <li>Historical timeline of game updates and changes</li>
+                        <li>Achievement gallery and tournament history</li>
+                        <li>Interactive features for community engagement</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-body text-center">
+                    <h4>Start Exploring!</h4>
+                    <p>Discover the amazing world of Rocket League through our collections and exhibits.</p>
+                    <a href="{% url 'car_collection' %}" class="btn btn-primary me-2">View Cars</a>
+                    <a href="{% url 'arena_collection' %}" class="btn btn-success me-2">View Arenas</a>
+                    <a href="{% url 'tournaments' %}" class="btn btn-warning">Tournaments</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

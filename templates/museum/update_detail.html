@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+
+{% block title %}Update {{ update.version }}{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-md-8 mx-auto">
+            {% if update.image %}
+            <img src="{{ update.image.url }}" class="img-fluid rounded mb-4" alt="Update {{ update.version }}">
+            {% endif %}
+            
+            <h1>Version {{ update.version }} - {{ update.title }}</h1>
+            <p class="lead text-muted">Released: {{ update.release_date }}</p>
+            
+            <div class="card mb-4">
+                <div class="card-body">
+                    <h5 class="card-title">Description</h5>
+                    <p class="card-text">{{ update.description }}</p>
+                </div>
+            </div>
+            
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Major Changes</h5>
+                    <p class="card-text">{{ update.major_changes|linebreaks }}</p>
+                </div>
+            </div>
+            
+            <div class="mt-4">
+                <a href="{% url 'game_history' %}" class="btn btn-secondary">
+                    <i class="fas fa-arrow-left"></i> Back to Game History
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

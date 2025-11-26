@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rocket League Museum - {% block title %}Home{% endblock %}</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome@6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        .navbar-brand { font-weight: bold; color: #ff8c00 !important; }
+        .hero-section {
+            background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url('/static/images/hero-bg.jpg');
+            background-size: cover; 
+            background-position: center;
+            background-repeat: no-repeat;
+            color: white; 
+            padding: 100px 0;
+            min-height: 60vh;
+            display: flex;
+            align-items: center;
+        }
+        .car-card, .arena-card, .highlight-card { transition: transform 0.3s; }
+        .car-card:hover, .arena-card:hover, .highlight-card:hover { transform: translateY(-5px); }
+        
+        /* Fallback если изображение не загрузится */
+        .hero-section.fallback {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container">
+            <a class="navbar-brand" href="{% url 'home' %}">
+                <i class="fas fa-rocket"></i> Rocket League Museum
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item"><a class="nav-link" href="{% url 'home' %}">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'car_collection' %}">Cars</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'arena_collection' %}">Arenas</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'highlights' %}">Best Moments</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'tournaments' %}">Tournaments</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'game_history' %}">Game History</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'achievements' %}">Achievements</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'comments_list' %}">Comments</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'about' %}">About</a></li>
+                </ul>
+                <div class="navbar-nav">
+                    {% if user.is_authenticated %}
+                        <span class="nav-link">Welcome, {{ user.username }}!</span>
+                        <a class="nav-link" href="{% url 'add_highlight' %}"><i class="fas fa-video"></i> Add Highlight</a>
+                        <a class="nav-link" href="{% url 'add_comment' %}">Add Comment</a>
+                        <form method="post" action="{% url 'custom_logout' %}" class="d-inline">
+                            {% csrf_token %}
+                            <button type="submit" class="nav-link btn btn-link" style="border: none; background: none; color: rgba(255,255,255,.55); padding: 0.5rem 1rem;">
+                                Logout
+                            </button>
+                        </form>
+                    {% else %}
+                        <a class="nav-link" href="{% url 'admin:login' %}">Login</a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    {% if messages %}
+    <div class="container mt-3">
+        {% for message in messages %}
+        <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+    <main>{% block content %}{% endblock %}</main>
+
+    <footer class="bg-dark text-light py-4 mt-5">
+        <div class="container text-center">
+            <p>&copy; 2025 Rocket League Museum. Educational project.</p>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <script>
+        // Проверка загрузки фонового изображения
+        document.addEventListener('DOMContentLoaded', function() {
+            var heroSection = document.querySelector('.hero-section');
+            if (heroSection) {
+                var img = new Image();
+                img.onload = function() {
+                    // Изображение загружено успешно
+                    console.log('Hero background image loaded successfully');
+                };
+                img.onerror = function() {
+                    // Изображение не загрузилось, применяем fallback
+                    heroSection.classList.add('fallback');
+                    console.log('Hero background image failed to load, using fallback');
+                };
+                img.src = '/static/images/hero-bg.jpg';
+            }
+        });
+    </script>
+</body>
+</html>

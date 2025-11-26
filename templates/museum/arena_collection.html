@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+
+{% block title %}Arenas{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <h1 class="text-center mb-4">Rocket League Arenas</h1>
+    
+    <div class="row">
+        {% for arena in arenas %}
+        <div class="col-lg-6 mb-4">
+            <div class="card arena-card h-100">
+                <img src="{{ arena.image.url }}" class="card-img-top" alt="{{ arena.name }}" style="height: 300px; object-fit: cover;">
+                <div class="card-body">
+                    <h5 class="card-title">{{ arena.name }}</h5>
+                    <p class="card-text">
+                        <strong>Type:</strong> {{ arena.get_arena_type_display }}<br>
+                        <strong>Environment:</strong> {{ arena.environment }}<br>
+                        <strong>Capacity:</strong> {{ arena.capacity }}
+                    </p>
+                    <p class="card-text">{{ arena.special_features|truncatewords:30 }}</p>
+                    <a href="{% url 'arena_detail' arena.id %}" class="btn btn-primary">View Details</a>
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <div class="col-12">
+            <div class="alert alert-info text-center">
+                <h4>No arenas available yet</h4>
+                <p>Check back later or add some arenas through the admin panel.</p>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+
+{% block title %}Game History{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <h1 class="text-center mb-4">Rocket League Game History</h1>
+    
+    <div class="row">
+        {% for update in updates %}
+        <div class="col-md-6 mb-4">
+            <div class="card h-100">
+                {% if update.image %}
+                <img src="{{ update.image.url }}" class="card-img-top" alt="Update {{ update.version }}" style="height: 200px; object-fit: cover;">
+                {% else %}
+                <div class="card-img-top bg-secondary d-flex align-items-center justify-content-center" style="height: 200px;">
+                    <i class="fas fa-sync-alt fa-3x text-light"></i>
+                </div>
+                {% endif %}
+                <div class="card-body">
+                    <h5 class="card-title">Version {{ update.version }}</h5>
+                    <h6 class="card-subtitle mb-2 text-muted">{{ update.title }}</h6>
+                    <p class="card-text">{{ update.description|truncatewords:30 }}</p>
+                    <p class="card-text"><small class="text-muted">Released: {{ update.release_date }}</small></p>
+                    <a href="{% url 'update_detail' update.id %}" class="btn btn-primary">View Details</a>
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <div class="col-12">
+            <div class="alert alert-info text-center">
+                <h4>No game updates available yet</h4>
+                <p>Check back later or add some updates through the admin panel.</p>
+                {% if user.is_superuser %}
+                <a href="{% url 'admin:museum_gameupdate_add' %}" class="btn btn-primary">Add Update in Admin</a>
+                {% endif %}
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

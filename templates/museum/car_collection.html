@@ -1,0 +1,88 @@
+{% extends 'base.html' %}
+
+{% block title %}Car Collection{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <h1 class="text-center mb-4">Rocket League Car Collection</h1>
+    
+    <div class="row mb-4">
+        <div class="col-md-6">
+            <input type="text" class="form-control" id="searchInput" placeholder="Search cars...">
+        </div>
+        <div class="col-md-6">
+            <select class="form-control" id="rarityFilter">
+                <option value="">All Rarities</option>
+                <option value="common">Common</option>
+                <option value="uncommon">Uncommon</option>
+                <option value="rare">Rare</option>
+                <option value="very_rare">Very Rare</option>
+                <option value="import">Import</option>
+                <option value="exotic">Exotic</option>
+                <option value="black_market">Black Market</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="row" id="carContainer">
+        {% for car in cars %}
+        <div class="col-lg-4 col-md-6 mb-4 car-item" data-rarity="{{ car.rarity }}">
+            <div class="card car-card h-100 rarity-{{ car.rarity }}">
+                <img src="{{ car.image.url }}" class="card-img-top" alt="{{ car.name }}" style="height: 250px; object-fit: cover;">
+                <div class="card-body">
+                    <h5 class="card-title">{{ car.name }}</h5>
+                    <p class="card-text">
+                        <strong>Manufacturer:</strong> {{ car.manufacturer }}<br>
+                        <strong>Hitbox:</strong> {{ car.hitbox }}<br>
+                        <strong>Release:</strong> {{ car.release_date }}
+                    </p>
+                    <span class="badge bg-{% if car.rarity == 'common' %}secondary{% elif car.rarity == 'uncommon' %}success{% elif car.rarity == 'rare' %}primary{% elif car.rarity == 'very_rare' %}info{% elif car.rarity == 'import' %}warning{% elif car.rarity == 'exotic' %}dark{% else %}danger{% endif %}">
+                        {{ car.get_rarity_display }}
+                    </span>
+                </div>
+                <div class="card-footer">
+                    <a href="{% url 'car_detail' car.id %}" class="btn btn-primary btn-sm">View Details</a>
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <div class="col-12">
+            <div class="alert alert-info text-center">
+                <h4>No cars available yet</h4>
+                <p>Check back later or add some cars through the admin panel.</p>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const searchInput = document.getElementById('searchInput');
+    const rarityFilter = document.getElementById('rarityFilter');
+    const carItems = document.querySelectorAll('.car-item');
+
+    function filterCars() {
+        const searchTerm = searchInput.value.toLowerCase();
+        const rarityValue = rarityFilter.value;
+
+        carItems.forEach(item => {
+            const carName = item.querySelector('.card-title').textContent.toLowerCase();
+            const carRarity = item.getAttribute('data-rarity');
+            
+            const matchesSearch = carName.includes(searchTerm);
+            const matchesRarity = !rarityValue || carRarity === rarityValue;
+            
+            if (matchesSearch && matchesRarity) {
+                item.style.display = 'block';
+            } else {
+                item.style.display = 'none';
+            }
+        });
+    }
+
+    searchInput.addEventListener('input', filterCars);
+    rarityFilter.addEventListener('change', filterCars);
+});
+</script>
+{% endblock %}

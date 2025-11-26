@@ -1,0 +1,139 @@
+{% extends 'base.html' %}
+
+{% block title %}Best Moments{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="mb-0">Лучшие моменты Rocket League</h1>
+        {% if user.is_authenticated %}
+        <a href="{% url 'add_highlight' %}" class="btn btn-primary">
+            <i class="fas fa-plus me-1"></i>Добавить хайлайт
+        </a>
+        {% endif %}
+    </div>
+    
+    <!-- Фильтры и поиск -->
+    <div class="card mb-4">
+        <div class="card-body">
+            <form method="get" class="row g-3">
+                <div class="col-md-4">
+                    <label for="search" class="form-label">Поиск</label>
+                    <input type="text" class="form-control" id="search" name="search" 
+                           value="{{ search_query }}" placeholder="Поиск по названию, игроку...">
+                </div>
+                <div class="col-md-3">
+                    <label for="type" class="form-label">Тип момента</label>
+                    <select class="form-select" id="type" name="type">
+                        <option value="">Все типы</option>
+                        <option value="aerial" {% if selected_type == 'aerial' %}selected{% endif %}>Ариал</option>
+                        <option value="double_tap" {% if selected_type == 'double_tap' %}selected{% endif %}>Двойное касание</option>
+                        <option value="ceiling_shot" {% if selected_type == 'ceiling_shot' %}selected{% endif %}>Удар с потолка</option>
+                        <option value="musty_flick" {% if selected_type == 'musty_flick' %}selected{% endif %}>Флик Масти</option>
+                        <option value="bump_play" {% if selected_type == 'bump_play' %}selected{% endif %}>Столкновение</option>
+                        <option value="save" {% if selected_type == 'save' %}selected{% endif %}>Сейв</option>
+                        <option value="pass_play" {% if selected_type == 'pass_play' %}selected{% endif %}>Командная игра</option>
+                        <option value="zero_second" {% if selected_type == 'zero_second' %}selected{% endif %}>Гол на последней секунде</option>
+                        <option value="other" {% if selected_type == 'other' %}selected{% endif %}>Другое</option>
+                    </select>
+                </div>
+                <div class="col-md-3">
+                    <label for="tournament" class="form-label">Турнир</label>
+                    <select class="form-select" id="tournament" name="tournament">
+                        <option value="">Все турниры</option>
+                        {% for tournament in tournaments %}
+                        <option value="{{ tournament.id }}" {% if selected_tournament == tournament.id|stringformat:"i" %}selected{% endif %}>
+                            {{ tournament.name }}
+                        </option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="col-md-2 d-flex align-items-end">
+                    <button type="submit" class="btn btn-primary w-100">Применить</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Сетка хайлайтов -->
+    <div class="row">
+        {% for highlight in highlights %}
+        <div class="col-lg-4 col-md-6 mb-4">
+            <div class="card h-100 highlight-card">
+                <div class="card-header bg-dark text-white d-flex justify-content-between">
+                    <small class="text-warning">{{ highlight.get_moment_type_display }}</small>
+                    {% if highlight.is_uploaded_file %}
+                    <small class="text-info"><i class="fas fa-file-video"></i></small>
+                    {% endif %}
+                </div>
+                
+                {% if highlight.thumbnail %}
+                <img src="{{ highlight.thumbnail.url }}" class="card-img-top" alt="{{ highlight.title }}" style="height: 200px; object-fit: cover;">
+                {% else %}
+                <div class="card-img-top bg-secondary d-flex align-items-center justify-content-center" style="height: 200px;">
+                    <i class="fas fa-play-circle fa-3x text-light"></i>
+                </div>
+                {% endif %}
+                
+                <div class="card-body">
+                    <h5 class="card-title">{{ highlight.title }}</h5>
+                    <p class="card-text text-muted small">{{ highlight.description|truncatewords:15 }}</p>
+                    <div class="d-flex justify-content-between align-items-center">
+                        <span class="badge bg-primary">{{ highlight.player }}</span>
+                        <small class="text-muted">{{ highlight.duration }}</small>
+                    </div>
+                    <div class="mt-2">
+                        <small class="text-muted">
+                            <i class="fas fa-eye"></i> {{ highlight.views }} просмотров
+                            {% if highlight.is_featured %}
+                            <span class="badge bg-warning text-dark ms-2">Избранное</span>
+                            {% endif %}
+                        </small>
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <a href="{% url 'highlight_detail' highlight.id %}" class="btn btn-sm btn-outline-primary w-100">
+                        Смотреть подробнее
+                    </a>
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <div class="col-12">
+            <div class="alert alert-info text-center">
+                <h4>Хайлайты не найдены</h4>
+                <p>Попробуйте изменить параметры фильтрации или добавьте хайлайты.</p>
+                {% if user.is_authenticated %}
+                <a href="{% url 'add_highlight' %}" class="btn btn-primary">Добавить первый хайлайт</a>
+                {% else %}
+                <a href="{% url 'admin:login' %}" class="btn btn-primary">Войти для добавления</a>
+                {% endif %}
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+    <!-- Статистика -->
+    {% if highlights %}
+    <div class="row mt-4">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body text-center">
+                    <h5>Всего хайлайтов: {{ highlights.count }}</h5>
+                    <p class="text-muted mb-0">Найдены лучшие моменты из турниров Rocket League</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+</div>
+
+<style>
+.highlight-card {
+    transition: transform 0.2s;
+}
+.highlight-card:hover {
+    transform: translateY(-5px);
+}
+</style>
+{% endblock %}
